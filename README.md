@@ -1,3 +1,15 @@
+jika mengambil video secara vertical menggunakan kamera nikon, namun saat diputar videonya tetap horizontal.
+
+maka dari itu untuk bisa diputar secara vertical, ada salah satu cara yang bisa digunakan yaitu menggunakan ffmpeg.
+
+## kenapa ffmpeg?
+
+karena tool ini bisa melakukan hampir semua pekerjaan video, termasuk cut, rotate, dll.
+
+dan juga file video yang sudah dirender ulang akan mendapatkan ukuran yang lebih kecil dari pada file video aslinya.
+
+ini saya butuhkan untuk menghemat penyimpanan. 
+
 # WINDOWS
 
 - install ffmpeg
