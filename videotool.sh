@@ -49,15 +49,17 @@ rotate_exif_one() {
   read -p "Arah [1=kanan 90, 2=kiri 270] default 2: " arah
   arah=${arah:-2}
   if [ "$arah" = "1" ]; then rot=90; else rot=270; fi
-  exiftool -overwrite_original -Rotation=$rot "$f"
-  echo "Selesai, $f sekarang Rotation=$rot"
+  echo "Cek $f - hanya rotate kalau horizontal (width > height)"
+  exiftool -overwrite_original -if '$ImageWidth > $ImageHeight' -Rotation=$rot "$f"
+  echo "Selesai, kalau videonya sudah vertical dia akan di-skip"
 }
 
 rotate_exif_batch() {
   read -p "Arah [1=kanan 90, 2=kiri 270] default 2: " arah
   arah=${arah:-2}
   if [ "$arah" = "1" ]; then rot=90; else rot=270; fi
-  exiftool -overwrite_original -Rotation=$rot -ext MP4 -ext mp4 -ext MOV -ext mov .
+  echo "Rotate batch - hanya yang horizontal saja"
+  exiftool -overwrite_original -if '$ImageWidth > $ImageHeight' -Rotation=$rot -ext MP4 -ext mp4 -ext MOV -ext mov .
   echo "Selesai batch Rotation=$rot"
 }
 
