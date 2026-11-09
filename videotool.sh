@@ -43,6 +43,24 @@ rotate_batch() {
   done
 }
 
+rotate_exif_one() {
+  read -p "Nama file video: " f
+  [ -e "$f" ] || { echo "File tidak ada!"; return; }
+  read -p "Arah [1=kanan 90, 2=kiri 270] default 2: " arah
+  arah=${arah:-2}
+  if [ "$arah" = "1" ]; then rot=90; else rot=270; fi
+  exiftool -overwrite_original -Rotation=$rot "$f"
+  echo "Selesai, $f sekarang Rotation=$rot"
+}
+
+rotate_exif_batch() {
+  read -p "Arah [1=kanan 90, 2=kiri 270] default 2: " arah
+  arah=${arah:-2}
+  if [ "$arah" = "1" ]; then rot=90; else rot=270; fi
+  exiftool -overwrite_original -Rotation=$rot -ext MP4 -ext mp4 -ext MOV -ext mov .
+  echo "Selesai batch Rotation=$rot"
+}
+
 cut_31_one() {
   read -p "Nama file video: " f
   [ -e "$f" ] || { echo "File tidak ada!"; return; }
@@ -57,8 +75,6 @@ cut_rotate_one() {
   if [ "$arah" = "1" ]; then trans=1; else trans=2; fi
   nice -n 19 ionice -c 3 ffmpeg -nostdin -noautorotate -i "$f" -t 31 -threads 4 -vf "transpose=$trans" -c:v libx264 -crf 24 -preset slow -an -metadata:s:v:0 rotate=0 "${f%.*}_cr.mp4" || exit 130
 }
-
-# ... fungsi exiftool tetap sama, tidak perlu trap ffmpeg ...
 
 while true; do
   echo ""
